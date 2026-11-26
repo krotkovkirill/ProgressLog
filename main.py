@@ -33,6 +33,21 @@ for actual, predicted in zip(y_test, y_pred):
 mae = mean_absolute_error(y_test, y_pred)
 print(f"Средняя абсолютная ошибка: {mae:.2f}")
 
+message = input("Введите сообщение для оценки: ")
+
+features = vectorizer.transform([message])
+score = model.predict(features)[0]
+print(f'Оценка дня: {score:.2f}')
+
+
+
+
+
+
+
+
+
+
 """while True:
     number = 1
     print("---\033[1mСтажировка\033[0m---")
