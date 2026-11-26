@@ -9,8 +9,6 @@ import pandas as pd
 data_path = Path(__file__).with_name("data.csv")
 df = pd.read_csv(data_path)
 
-print(df.head())
-
 vectorizer = TfidfVectorizer()
 
 X = df["text"]
@@ -26,31 +24,26 @@ model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
 
+"""
 for actual, predicted in zip(y_test, y_pred):
     error = abs(actual - predicted)
     print(f"Твоя оценка: {actual} | Прогноз: {predicted:.2f} | Ошибка: {error:.2f}")
+"""
 
 mae = mean_absolute_error(y_test, y_pred)
-print(f"Средняя абсолютная ошибка: {mae:.2f}")
+print(f"Средняя абсолютная ошибка: {mae:.2f}\n")
 
-message = input("Введите сообщение для оценки: ")
+scores = []
+week = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье']
 
-features = vectorizer.transform([message])
-score = model.predict(features)[0]
-print(f'Оценка дня: {score:.2f}')
+for day in range(1, 8):
+    message = input(f'введите как прошел ваш {week[day-1]}: ')
+    features = vectorizer.transform([message])
+    score = model.predict(features)[0]
+    scores.append(score)
 
-
-
-
-
-
-
-
+for day, score in zip(range(1, 8), scores):
+    print(f"Прогноз на {week[day-1]}: {score:.1f}")
 
 
-"""while True:
-    number = 1
-    print("---\033[1mСтажировка\033[0m---")
-    print(f"*** Неделя {number} ***")
-    message = input("Расскажите как прошла неделя стажировки:  ")
-"""
+
