@@ -1,4 +1,5 @@
 from pathlib import Path
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Ridge
@@ -46,4 +47,8 @@ for day, score in zip(range(1, 8), scores):
     print(f"Прогноз на {week[day-1]}: {score:.1f}")
 
 
+plt.plot(week, scores, marker='o')
+plt.title('Прогноз на неделю')
+plt.ylim(0, 10)
+plt.show()
 
