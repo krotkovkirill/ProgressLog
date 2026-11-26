@@ -39,15 +39,26 @@ week = ['понедельник', 'вторник', 'среда', 'четвер�
 
 for day in range(1, 8):
     message = input(f'введите как прошел ваш {week[day-1]}: ')
+    if message.strip() == 'f':
+        scores.append(None)
+        continue
     features = vectorizer.transform([message])
     score = model.predict(features)[0]
     scores.append(score)
 
 for day, score in zip(range(1, 8), scores):
-    print(f"Прогноз на {week[day-1]}: {score:.1f}")
+    if score is None:
+        print(f"Прогноз на {week[day-1]}: день гавно")
+    else:
+        print(f"Прогноз на {week[day-1]}: {score:.1f}")
 
 
-plt.plot(week, scores, marker='o')
+rate_scores = [score for score in scores if score is not None]
+plot_scores = [float('nan') if score is None else score for score in scores]
+
+print(f"Средняя оценка за неделю: {sum(rate_scores) / len(rate_scores):.1f}")
+
+plt.plot(week, plot_scores, marker='o')
 plt.title('Прогноз на неделю')
 plt.ylim(0, 10)
 plt.show()
